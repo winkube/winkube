@@ -1,0 +1,31 @@
+name: release
+# You must provide a tag either via the action input or the git ref (i.e push / create a tag). 
+# If you do not provide a tag the action will fail.
+
+# If the tag of the release you are creating does not yet exist, you should set 
+# both the tag and commit action inputs. commit can point to a commit hash or a branch name (ex - main).
+on: 
+#   workflow_dispatch:
+#     inputs:
+#       branch:
+#         description: 'Define branch name to run CI GH action against'     
+#         required: true
+#         default: 'main'
+  push:
+    tags:
+    - '*'
+
+jobs:
+  call-ci:
+#     uses: winkube/winkube/.github/workflows/ci.yml@{{ github.event.inputs.branch }}
+    uses: winkube/winkube/.github/workflows/ci.yml@main
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: "winkube.tar.gz,winkube.exe"
+#         bodyFile: "body.md"
+#         token: ${{ secrets.GITHUB_TOKEN }}
+
