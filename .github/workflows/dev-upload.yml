@@ -1,0 +1,19 @@
+name: dev-upload
+
+on: workflow_dispatch
+
+jobs:
+    call-ci:
+      uses: winkube/winkube/.github/workflows/ci.yml@main
+      
+    upload:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/upload-artifact@v2.2.4
+          if: success()
+          with:
+            name: winkube-dev-{{ github.sha }}.exe
+            path: bin/winkube*
+            if-no-files-found: warn
+            retention-days: 0
+
