@@ -1,5 +1,5 @@
 # ARG SERVERCORE_VERSION
-FROM mcr.microsoft.com/windows/servercore:ltsc2019 AS winkube-goboring
+FROM mcr.microsoft.com/windows/servercore:ltsc2022 AS winkube-goboring
 # FROM rancher/golang:1.17-windowsservercore AS winkube-goboring
 SHELL ["powershell", "-NoLogo", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 # WORKDIR C:/
@@ -11,7 +11,7 @@ SHELL ["powershell", "-NoLogo", "-Command", "$ErrorActionPreference = 'Stop'; $P
 #         Remove-Item -Force -Recurse -Path c:\git.zip 
 
 # go get github.com/golang/go@dev.boringcrypto.go1.17
-# https://go-boringcrypto.storage.googleapis.com/go1.17.2b7.src.tar.gz
+# https://go-boringcrypto.storage.googleapis.com/go1.17.3b7.src.tar.gz
 
 RUN     if ($null -ne $GODEBUG -or $env:GODEBUG) { \
         $env:EXTRA_LDFLAGS="$env:EXTRA_LDFLAGS -s -w" \
@@ -22,16 +22,16 @@ RUN     if ($null -ne $GODEBUG -or $env:GODEBUG) { \
         } \
         } 
 
-ARG RUNTIME_PATH
-ARG CRICTL_VERSION
-ARG CONTAINERD_VERSION
-ARG WINS_VERSION
-ARG CALICO_VERSION
-ARG CNI_PLUGIN_VERSION
-ARG ARCH=amd64
-ARG KUBERNETES_VERSION=dev
+# ARG RUNTIME_PATH
+# ARG CRICTL_VERSION
+# ARG CONTAINERD_VERSION
+# ARG WINS_VERSION
+# ARG CALICO_VERSION
+# ARG CNI_PLUGIN_VERSION
+# ARG ARCH=amd64
+# ARG KUBERNETES_VERSION=dev
 
-ADD https://go-boringcrypto.storage.googleapis.com/go1.17.2b7.src.tar.gz /usr/local/boring.tgz
+ADD https://go-boringcrypto.storage.googleapis.com/go1.17.3b7.src.tar.gz /usr/local/boring.tgz
 WORKDIR C:/usr/local/boring
 RUN tar xzf ../boring.tgz
 WORKDIR C:/usr/local/boring/go/src
@@ -40,5 +40,5 @@ COPY scripts/ /usr/local/boring/go/bin/
 
 
 
-FROM mcr.microsoft.com/windows/nanoserver:1809 AS winkube-build
+FROM mcr.microsoft.com/windows/nanoserver:ltsc2022 AS winkube-build
 COPY --from=winkube-goboring /usr/local/boring/go/ /usr/local/go/

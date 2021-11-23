@@ -1,6 +1,7 @@
 #Requires -Version 5.0
 $ErrorActionPreference = "Stop"
 
+Import-Module -Force "$PSScriptRoot\utils.psm1"
 Invoke-Script -File "$PSScriptRoot\version.ps1"
 Invoke-Script -File "$PSScriptRoot\runtime-versions.ps1"
 
@@ -20,7 +21,7 @@ if (-not $HOST_RELEASE_ID) {
 }
 $IMAGE = ("{0}/{1}-runtime:{2}-windows-{3}-{4}" -f $REPO, $PROG, $TAG, $HOST_RELEASE_ID, $ARCH)
 
-Set-Location $SRC_PATH
+# Set-Location $SRC_PATH
 
 $DOCKERFILE = "winkube-runtime.dockerfile"
 
