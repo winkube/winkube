@@ -26,6 +26,10 @@ jobs:
     - uses: ncipollo/release-action@v1
       with:
         artifacts: "winkube.tar.gz,winkube.exe"
+        prerelease: true
+        generateReleaseNotes: true
+        commit: ${{ github.sha }}
+        tag: ${{ github.ref_name }}
 #         bodyFile: "body.md"
 #         token: ${{ secrets.GITHUB_TOKEN }}
 
