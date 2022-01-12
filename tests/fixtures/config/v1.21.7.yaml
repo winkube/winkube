@@ -1,0 +1,53 @@
+packyaks:
+  - ./test-packyak.exe
+services:
+  containerd:
+    path: ./test-service.exe
+    config:
+      flags:
+        - --name
+        - containerd
+        - --version
+        - 0.15.1
+  flannel:
+    path: ./test-service.exe
+    config:
+      flags:
+        - --name
+        - flannel
+        - --version
+        - 0.15.1
+  flannel-cni:
+    path: ./test-service.exe
+    config:
+      flags:
+        - --name
+        - flannel-cni
+        - --version
+        - 1.0.0
+  kubelet:
+    path: ./test-service.exe
+    config:
+      flags:
+        - --name
+        - kubelet
+        - --version
+        - 1.22.7
+  kube-proxy:
+    path: ./test-service.exe
+    config:
+      flags:
+        - --name
+        - kube-proxy
+        - --version
+        - 1.22.7
+  wins:
+    path: ./test-service.exe
+    config:
+      flags:
+        - --name
+        - wins
+        - --version
+        - 0.1.3
+cluster_name: test-cluster
+kubernetes_version: v1.21.7
