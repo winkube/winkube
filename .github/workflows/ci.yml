@@ -1,15 +1,13 @@
-name: ci
-
+name: Continous Integration
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
-  workflow_call:
-
+    branches:
+      - main
 jobs:
   ci:
-    name: "Run CI"
     strategy:
       fail-fast: false
       matrix:
@@ -23,11 +21,16 @@ jobs:
     - uses: WillAbides/setup-go-faster@v1.7.0
       with:
         go-version: ${{ matrix.go }}
+    - name: Test and Coverage
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      run: |
+        go test -v -coverprofile="coverage.txt" ./...
+        go vet ./...
+        curl.exe -o codecov.exe https://uploader.codecov.io/latest/windows/codecov.exe 
+        .\codecov.exe -t $Env:CODECOV_TOKEN
     - name: Build
-      run: go build -ldflags -s -w -extldflags "-static -Wl,--fatal-warnings" -o bin/winkube.exe -v ./...
-  
-    - run: "go test ./..."
-    - run: "go vet ./..."
+      run: go build
     - uses: dominikh/staticcheck-action@v1.0.0
       with:
         version: "2021.1.2"
