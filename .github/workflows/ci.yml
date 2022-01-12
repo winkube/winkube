@@ -21,16 +21,14 @@ jobs:
     - uses: WillAbides/setup-go-faster@v1.7.0
       with:
         go-version: ${{ matrix.go }}
-    - name: Test and Coverage
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    - name: Install Mage
       run: |
-        go test -v -coverprofile="coverage.txt" ./...
-        go vet ./...
-        curl.exe -o codecov.exe https://uploader.codecov.io/latest/windows/codecov.exe 
-        .\codecov.exe -t $Env:CODECOV_TOKEN
-    - name: Build
-      run: go build
+        go install github.com/magefile/mage
+    - name: Continuous Integration
+      run: mage ci
+    - uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
     - uses: dominikh/staticcheck-action@v1.0.0
       with:
         version: "2021.1.2"
