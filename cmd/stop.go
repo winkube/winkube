@@ -11,10 +11,24 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package main
+package cmd
 
-import "github.com/winkube/winkube/cmd"
+import (
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
+)
 
-func main() {
-	cmd.Execute()
+var stopCmd = &cobra.Command{
+	Use:   "stop",
+	Short: "Stop kubernetes",
+	Args:  cobra.NoArgs,
+	Run: func(cmd *cobra.Command, args []string) {
+		logrus.Traceln("trace stopping")
+		logrus.Debugln("debug stopping")
+		logrus.Printf("stopping")
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(stopCmd)
 }
