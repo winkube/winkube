@@ -20,6 +20,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/spf13/cobra/doc"
 	"github.com/spf13/viper"
 	easy "github.com/t-tomalak/logrus-easy-formatter"
 )
@@ -29,18 +30,37 @@ var (
 	debugVar bool
 	traceVar bool
 	quietVar bool
+	rootCmd  = &cobra.Command{
+		Use:   "winkube",
+		Short: "Run kubernetes on Windows",
+	}
 )
-
-var rootCmd = &cobra.Command{
-	Use:   "winkube",
-	Short: "Run kubernetes on Windows",
-}
 
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
 	}
+}
+
+func Docs(path string) error {
+
+	stat, err := os.Stat(path)
+	if err != nil && !os.IsNotExist(err) {
+		return err
+	}
+
+	if stat != nil && stat.IsDir() {
+		if err := os.RemoveAll(path); err != nil {
+			return err
+		}
+	}
+
+	if err := os.Mkdir(path, 0600); err != nil {
+		return err
+	}
+
+	return doc.GenMarkdownTree(rootCmd, path)
 }
 
 func init() {

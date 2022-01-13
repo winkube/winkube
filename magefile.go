@@ -23,6 +23,7 @@ import (
 	"strings"
 
 	"github.com/magefile/mage/mg"
+	"github.com/winkube/winkube/cmd"
 )
 
 func Build() error {
@@ -37,6 +38,8 @@ func Ci() error {
 	mg.Deps(Lint)
 	mg.Deps(Test)
 	mg.Deps(Build)
+	mg.Deps(Docs)
+	// mg.Deps(ValidateDocs)
 	return nil
 }
 
@@ -58,6 +61,31 @@ func Install() error {
 	mg.Deps(Build)
 	fmt.Println("Installing...")
 	return os.Rename("./winkube.exe", "~/bin/winkube.exe")
+}
+
+func Docs() error {
+	fmt.Println("Generating Docs...")
+	if err := cmd.Docs("./docs/cmd/"); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// doesn't work yet, crlf and other garbagbe is making this not do what i want
+func ValidateDocs() error {
+	fmt.Println("Validating Docs...")
+	cmd := exec.Command("git", "status", "--porcelain", "--untracked-files=no")
+	out, err := cmd.Output()
+	if err != nil {
+		return err
+	}
+
+	if string(out) != "" {
+		return fmt.Errorf("Found changes while generating docs, please commit docs changes and try again")
+	}
+
+	return nil
 }
 
 func InstallDeps() error {
