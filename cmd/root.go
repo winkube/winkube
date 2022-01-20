@@ -14,7 +14,6 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 
@@ -44,7 +43,6 @@ func Execute() {
 }
 
 func Docs(path string) error {
-
 	stat, err := os.Stat(path)
 	if err != nil && !os.IsNotExist(err) {
 		return err
@@ -91,7 +89,6 @@ func initConfig() {
 			logrus.SetLevel(logrus.TraceLevel)
 		}
 	} else {
-		// run logrus as fmt.Println()
 		logrus.SetFormatter(&easy.Formatter{
 			LogFormat: "%msg%",
 		})
@@ -102,8 +99,7 @@ func initConfig() {
 	}
 
 	viper.AutomaticEnv()
-
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+		logrus.Debugf("Using config file: %s", viper.ConfigFileUsed())
 	}
 }

@@ -22,13 +22,15 @@ var startCmd = &cobra.Command{
 	Use:   "start",
 	Short: "Start kubernetes",
 	Args:  cobra.NoArgs,
-	Run: func(cmd *cobra.Command, args []string) {
-		logrus.Traceln("trace starting")
-		logrus.Debugln("debug starting")
-		logrus.Printf("starting")
-	},
+	Run:   start,
 }
 
 func init() {
 	rootCmd.AddCommand(startCmd)
+}
+
+func start(cmd *cobra.Command, args []string) {
+	logrus.Traceln("trace starting")
+	logrus.Debugln("debug starting")
+	logrus.Printf("starting")
 }

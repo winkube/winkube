@@ -35,6 +35,7 @@ func Build() error {
 
 func Ci() error {
 	mg.Deps(InstallDeps)
+	mg.Deps(InstallTestDeps)
 	mg.Deps(Lint)
 	mg.Deps(Test)
 	mg.Deps(Build)
@@ -104,6 +105,12 @@ func InstallDeps() error {
 	}
 
 	return nil
+}
+
+func InstallTestDeps() error {
+	fmt.Println("Installing Test Deps...")
+	cmd := exec.Command("go", "build", "-o", "./tests/service.exe", "./tests/fixtures/service/main.go")
+	return cmd.Run()
 }
 
 func Clean() error {

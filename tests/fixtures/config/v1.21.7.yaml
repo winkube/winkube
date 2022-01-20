@@ -1,53 +1,89 @@
-packyaks:
-  - ./test-packyak.exe
-services:
+components:
   containerd:
-    path: ./test-service.exe
-    config:
-      flags:
-        - --name
-        - containerd
-        - --version
-        - 0.15.1
+    version: v1.5.8
+    name: containerd
+    flags:
+      - --test
+      - --verbose
+  sqllite:
+    version: v3.32.2
+    name: sqllite
+    flags:
+      - --test
+      - --verbose
+  cni_plugins:
+    version: v1.0.0
+    name: cni_plugins
+    flags:
+      - --test
+      - --verbose
+  kine:
+    version: v1.0.0
+    name: kine
+    flags:
+      - --test
+      - --verbose
+  flannel_cni_plugin:
+    version: v1.0.0
+    name: flannel_cni_plugin
+    flags:
+      - --test
+      - --verbose
   flannel:
-    path: ./test-service.exe
-    config:
-      flags:
-        - --name
-        - flannel
-        - --version
-        - 0.15.1
-  flannel-cni:
-    path: ./test-service.exe
-    config:
-      flags:
-        - --name
-        - flannel-cni
-        - --version
-        - 1.0.0
-  kubelet:
-    path: ./test-service.exe
-    config:
-      flags:
-        - --name
-        - kubelet
-        - --version
-        - 1.22.7
-  kube-proxy:
-    path: ./test-service.exe
-    config:
-      flags:
-        - --name
-        - kube-proxy
-        - --version
-        - 1.22.7
+    version: v0.15.1
+    name: flannel
+    flags:
+      - --test
+      - --verbose
   wins:
-    path: ./test-service.exe
-    config:
+    version: v0.1.3
+    name: wins
+    flags:
+      - --test
+      - --verbose
+  cri_tools:
+    version: v1.22.0
+    name: cri_tools
+    flags:
+      - --test
+      - --verbose
+  kubernetes:
+    kube_apiserver:
+      version: v1.22.4
+      name: kube_apiserver
       flags:
-        - --name
-        - wins
-        - --version
-        - 0.1.3
+        - --test
+        - --verbose
+    kubelet:
+      version: v1.22.4
+      name: kubelet
+      flags:
+        - --test
+        - --verbose
+    kube_proxy:
+      version: v1.22.4
+      name: kube_proxy
+      flags:
+        - --test
+        - --verbose
+    kubectl:
+      version: v1.22.4
+      name: kubectl
+      flags:
+        - --test
+        - --verbose
+
+name: test-cluster
+cni:
+
+
+private_registries: {}
+args: {}
+cloud_provider: {}
+network_config: {}
+dns_config: {}
+proxy_config: {}
+distro: winkube
 cluster_name: test-cluster
-kubernetes_version: v1.21.7
+version: v0.0.1
+kubernetes: v1.22.4

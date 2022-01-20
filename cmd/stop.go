@@ -22,13 +22,15 @@ var stopCmd = &cobra.Command{
 	Use:   "stop",
 	Short: "Stop kubernetes",
 	Args:  cobra.NoArgs,
-	Run: func(cmd *cobra.Command, args []string) {
-		logrus.Traceln("trace stopping")
-		logrus.Debugln("debug stopping")
-		logrus.Printf("stopping")
-	},
+	Run:   stop,
 }
 
 func init() {
 	rootCmd.AddCommand(stopCmd)
+}
+
+func stop(cmd *cobra.Command, args []string) {
+	logrus.Traceln("trace stopping")
+	logrus.Debugln("debug stopping")
+	logrus.Printf("stopping")
 }
